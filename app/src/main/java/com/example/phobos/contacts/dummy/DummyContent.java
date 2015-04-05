@@ -1,5 +1,7 @@
 package com.example.phobos.contacts.dummy;
 
+import com.example.phobos.contacts.Contact;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,40 +18,22 @@ public class DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static List<Contact> ITEMS = new ArrayList<>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static Map<String, Contact> ITEM_MAP = new HashMap<>();
+
 
     static {
-        // Add 3 sample items.
-        addItem(new DummyItem("1", "Item 1"));
-        addItem(new DummyItem("2", "Item 2"));
-        addItem(new DummyItem("3", "Item 3"));
+        addItem(new Contact("1", "Peter", "123", null));
+        addItem(new Contact("2", "Anna", "321", null));
+        addItem(new Contact("3", "Ivan", "753", null));
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(Contact item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
-    }
-
-    /**
-     * A dummy item representing a piece of content.
-     */
-    public static class DummyItem {
-        public String id;
-        public String content;
-
-        public DummyItem(String id, String content) {
-            this.id = id;
-            this.content = content;
-        }
-
-        @Override
-        public String toString() {
-            return content;
-        }
+        ITEM_MAP.put(item.getId(), item);
     }
 }
