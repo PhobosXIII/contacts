@@ -1,10 +1,42 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contact_list"
-    android:name="com.example.phobos.contacts.ContactListFragment"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/content_margin"
-    android:layout_marginRight="@dimen/content_margin"
-    tools:context=".ContactListActivity"
-    tools:layout="@android:layout/list_content" />
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/item_indent"
+        android:gravity="center"
+        android:background="@color/header_bg">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatar_normal_size"
+            android:layout_height="@dimen/avatar_normal_size"
+            android:contentDescription="@string/profile_avatar_description"
+            android:layout_margin="@dimen/item_indent"/>
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+    <fragment
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/contact_list"
+        android:name="com.example.phobos.contacts.ContactListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/content_margin"
+        android:layout_marginRight="@dimen/content_margin"
+        tools:context=".ContactListActivity"
+        tools:layout="@android:layout/list_content" />
+
+</LinearLayout>

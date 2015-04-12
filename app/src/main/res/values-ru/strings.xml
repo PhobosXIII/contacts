@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Контакты</string>
     <string name="title_contact_detail">Контакт</string>
+    <string name="profile_avatar_description">Аватарка профиля</string>
 </resources>

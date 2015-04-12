@@ -4,11 +4,34 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/content_margin"
     android:layout_marginRight="@dimen/content_margin"
-    android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal"
-    android:orientation="horizontal"
-    android:showDividers="middle"
+    android:orientation="vertical"
+
     tools:context=".ContactListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/item_indent"
+        android:gravity="center"
+        android:background="@color/header_bg">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatar_normal_size"
+            android:layout_height="@dimen/avatar_normal_size"
+            android:contentDescription="@string/profile_avatar_description"
+            android:layout_margin="@dimen/item_indent"/>
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
 
     <!--
     This layout is a two-pane layout for the Contacts
@@ -16,16 +39,25 @@
     
     -->
 
-    <fragment android:id="@+id/contact_list"
-        android:name="com.example.phobos.contacts.ContactListFragment"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:layout="@android:layout/list_content" />
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:showDividers="middle">
 
-    <FrameLayout android:id="@+id/contact_detail_container"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3" />
+        <fragment android:id="@+id/contact_list"
+            android:name="com.example.phobos.contacts.ContactListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:layout="@android:layout/list_content" />
 
+        <FrameLayout android:id="@+id/contact_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
+
+    </LinearLayout>
 </LinearLayout>

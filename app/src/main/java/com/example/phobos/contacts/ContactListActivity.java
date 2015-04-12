@@ -1,8 +1,13 @@
 package com.example.phobos.contacts;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
@@ -76,6 +81,33 @@ public class ContactListActivity extends FragmentActivity
             Intent detailIntent = new Intent(this, ContactDetailActivity.class);
             detailIntent.putExtra(ContactDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String [] projection = new String[]
+                {
+                        ContactsContract.Profile.DISPLAY_NAME_PRIMARY,
+                        ContactsContract.Profile.PHOTO_THUMBNAIL_URI
+                };
+
+        Cursor profileCursor = getContentResolver().query(
+                        ContactsContract.Profile.CONTENT_URI,
+                        projection,
+                        null,
+                        null,
+                        null
+        );
+
+        ImageView avatar = (ImageView) findViewById(R.id.avatar);
+        TextView name = (TextView) findViewById(R.id.profile_name);
+
+        if (profileCursor.moveToFirst()) {
+            Uri avatarUri = Uri.parse(profileCursor.getString(profileCursor.getColumnIndex(projection[1])));
+            avatar.setImageURI(avatarUri);
+            name.setText(profileCursor.getString(profileCursor.getColumnIndex(projection[0])));
         }
     }
 }
