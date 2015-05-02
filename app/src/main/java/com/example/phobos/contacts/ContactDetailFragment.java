@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-import com.example.phobos.contacts.dummy.DummyContent;
-
 /**
  * A fragment representing a single Contact detail screen.
  * This fragment is either contained in a {@link ContactListActivity}
@@ -40,10 +37,7 @@ public class ContactDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+
         }
     }
 

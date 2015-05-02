@@ -1,12 +1,17 @@
 package com.example.phobos.contacts;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.ListView;
-
-import com.example.phobos.contacts.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Contacts. This fragment
@@ -17,7 +22,28 @@ import com.example.phobos.contacts.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ContactListFragment extends ListFragment {
+public class ContactListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private final static String[] FROM_COLUMNS = {
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
+            ContactsContract.Contacts.LAST_TIME_CONTACTED
+    };
+
+    private final static int[] TO_IDS = {
+            R.id.contact_name,
+            R.id.contact_phone
+    };
+
+    private static final String[] PROJECTION = {
+            ContactsContract.Contacts._ID,
+            ContactsContract.Contacts.LOOKUP_KEY,
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
+            ContactsContract.Contacts.LAST_TIME_CONTACTED
+    };
+
+    // The column index for the _ID column
+    private static final int CONTACT_ID_INDEX = 0;
+    // The column index for the LOOKUP_KEY column
+    private static final int LOOKUP_KEY_INDEX = 1;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -35,6 +61,8 @@ public class ContactListFragment extends ListFragment {
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private SimpleCursorAdapter mAdapter;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -69,8 +97,13 @@ public class ContactListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ContactAdapter adapter = new ContactAdapter(getActivity(), DummyContent.ITEMS);
-        setListAdapter(adapter);
+        mAdapter = new SimpleCursorAdapter(
+                getActivity(),
+                R.layout.contact_item,
+                null,
+                FROM_COLUMNS, TO_IDS,
+                0);
+        setListAdapter(mAdapter);
     }
 
     @Override
@@ -97,6 +130,12 @@ public class ContactListFragment extends ListFragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
 
@@ -108,9 +147,13 @@ public class ContactListFragment extends ListFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
 
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).getId());
+        Cursor cursor = ((SimpleCursorAdapter)listView.getAdapter()).getCursor();
+        cursor.moveToPosition(position);
+        long contactId = cursor.getLong(CONTACT_ID_INDEX);
+        String contactKey = cursor.getString(LOOKUP_KEY_INDEX);
+        // Create the contact's content Uri
+        Uri contactUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
+        mCallbacks.onItemSelected(contactKey);
     }
 
     @Override
@@ -120,6 +163,28 @@ public class ContactListFragment extends ListFragment {
             // Serialize and persist the activated item position.
             outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(
+                getActivity(),
+                ContactsContract.Contacts.CONTENT_URI,
+                PROJECTION,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
     }
 
     /**
