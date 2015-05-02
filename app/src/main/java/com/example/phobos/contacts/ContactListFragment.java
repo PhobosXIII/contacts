@@ -45,7 +45,7 @@ public class ContactListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        void onItemSelected(String id);
     }
 
     /**

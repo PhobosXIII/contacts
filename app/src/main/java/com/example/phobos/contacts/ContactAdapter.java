@@ -29,7 +29,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         if (view == null) {
             LayoutInflater inflater =
                     (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.contact_item, null);
+            view = inflater.inflate(R.layout.contact_item, parent, false);
             holder = new ViewHolder();
             holder.name = (TextView) view.findViewById(R.id.contact_name);
             holder.phone = (TextView) view.findViewById(R.id.contact_phone);

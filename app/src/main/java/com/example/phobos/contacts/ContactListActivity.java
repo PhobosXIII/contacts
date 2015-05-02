@@ -109,5 +109,7 @@ public class ContactListActivity extends FragmentActivity
             avatar.setImageURI(avatarUri);
             name.setText(profileCursor.getString(profileCursor.getColumnIndex(projection[0])));
         }
+
+        profileCursor.close();
     }
 }
