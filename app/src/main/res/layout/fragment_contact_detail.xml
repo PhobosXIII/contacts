@@ -1,9 +1,35 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_detail"
-    style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="@dimen/content_margin"
     android:textIsSelectable="true"
-    tools:context=".ContactDetailFragment" />
+    tools:context=".ContactDetailFragment">
+
+    <ImageView
+        android:id="@+id/contact_avatar"
+        android:layout_width="@dimen/avatar_big_size"
+        android:layout_height="@dimen/avatar_big_size"
+        android:contentDescription="@string/profile_avatar_description"
+        android:layout_margin="@dimen/item_indent"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:padding="@dimen/item_indent"
+        android:textAppearance="?android:textAppearanceLarge"/>
+
+    <TextView
+        android:id="@+id/contact_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone"
+        android:padding="@dimen/item_indent"
+        android:textAppearance="?android:textAppearanceMedium"/>
+
+</LinearLayout>

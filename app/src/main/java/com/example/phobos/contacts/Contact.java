@@ -1,6 +1,11 @@
 package com.example.phobos.contacts;
 
-public class Contact {
+import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.provider.ContactsContract.CommonDataKinds;
+
+public class Contact implements Parcelable{
     private String id;
     private String name;
     private String phone;
@@ -43,5 +48,50 @@ public class Contact {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public static Contact fromCursor(Cursor cursor) {
+        int idColumnIndex = cursor.getColumnIndex(CommonDataKinds.Contactables.LOOKUP_KEY);
+        int nameColumnIndex = cursor.getColumnIndex(CommonDataKinds.Contactables.DISPLAY_NAME);
+        int phoneColumnIndex = cursor.getColumnIndex(CommonDataKinds.Phone.NUMBER);
+        int avatarColumnIndex = cursor.getColumnIndex(CommonDataKinds.Photo.PHOTO_THUMBNAIL_URI);
+
+        String id = cursor.getString(idColumnIndex);
+        String name = cursor.getString(nameColumnIndex);
+        String phone = cursor.getString(phoneColumnIndex);
+        String avatar = cursor.getString(avatarColumnIndex);
+
+        return new Contact(id, name, phone, avatar);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(avatar);
+    }
+
+    public static final Parcelable.Creator<Contact> CREATOR
+            = new Parcelable.Creator<Contact>() {
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
+
+    private Contact(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        phone = in.readString();
+        avatar = in.readString();
     }
 }

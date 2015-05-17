@@ -2,8 +2,8 @@ package com.example.phobos.contacts;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 
@@ -16,7 +16,7 @@ import android.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ContactDetailFragment}.
  */
-public class ContactDetailActivity extends ActionBarActivity {
+public class ContactDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,8 @@ public class ContactDetailActivity extends ActionBarActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ContactDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ContactDetailFragment.ARG_ITEM_ID));
+            arguments.putParcelable(ContactDetailFragment.ARG_ITEM,
+                    getIntent().getParcelableExtra(ContactDetailFragment.ARG_ITEM));
             ContactDetailFragment fragment = new ContactDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

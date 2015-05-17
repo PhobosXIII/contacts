@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,13 +63,13 @@ public class ContactListActivity extends FragmentActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(Contact contact) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ContactDetailFragment.ARG_ITEM_ID, id);
+            arguments.putParcelable(ContactDetailFragment.ARG_ITEM, contact);
             ContactDetailFragment fragment = new ContactDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -79,7 +80,7 @@ public class ContactListActivity extends FragmentActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ContactDetailActivity.class);
-            detailIntent.putExtra(ContactDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(ContactDetailFragment.ARG_ITEM, contact);
             startActivity(detailIntent);
         }
     }
@@ -105,8 +106,14 @@ public class ContactListActivity extends FragmentActivity
         TextView name = (TextView) findViewById(R.id.profile_name);
 
         if (profileCursor.moveToFirst()) {
-            Uri avatarUri = Uri.parse(profileCursor.getString(profileCursor.getColumnIndex(projection[1])));
-            avatar.setImageURI(avatarUri);
+            String avatarUri = profileCursor.getString(profileCursor.getColumnIndex(projection[1]));
+            if (!TextUtils.isEmpty(avatarUri)) {
+                avatar.setImageURI(Uri.parse(avatarUri));
+            }
+            else {
+                avatar.setImageResource(R.mipmap.ic_launcher);
+            }
+
             name.setText(profileCursor.getString(profileCursor.getColumnIndex(projection[0])));
         }
 

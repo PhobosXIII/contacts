@@ -3,4 +3,5 @@
     <dimen name="content_margin">16dp</dimen>
     <dimen name="item_indent">8dp</dimen>
     <dimen name="avatar_normal_size">60dp</dimen>
+    <dimen name="avatar_big_size">90dp</dimen>
 </resources>

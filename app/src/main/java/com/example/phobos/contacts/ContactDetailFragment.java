@@ -1,10 +1,13 @@
 package com.example.phobos.contacts;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -18,12 +21,13 @@ public class ContactDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM = "item";
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private Contact mItem;
+    private Contact mContact;
+
+    private TextView name;
+    private TextView phone;
+    private ImageView avatar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -33,24 +37,42 @@ public class ContactDetailFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_contact_detail, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_contact_detail, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.contact_detail)).setText(mItem.getName());
+        name = (TextView) view.findViewById(R.id.contact_name);
+        phone = (TextView) view.findViewById(R.id.contact_phone);
+        avatar = (ImageView) view.findViewById(R.id.contact_avatar);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getArguments().containsKey(ARG_ITEM)) {
+            mContact = getArguments().getParcelable(ARG_ITEM);
         }
 
-        return rootView;
+        if (mContact != null) {
+            if (!TextUtils.isEmpty(mContact.getName())) {
+                name.setText(mContact.getName());
+            }
+
+            if (!TextUtils.isEmpty(mContact.getPhone())) {
+                phone.setText(mContact.getPhone());
+            }
+
+            if (!TextUtils.isEmpty(mContact.getAvatar())) {
+                avatar.setImageURI(Uri.parse(mContact.getAvatar()));
+            } else {
+                avatar.setImageResource(R.mipmap.ic_launcher);
+            }
+        }
     }
 }
